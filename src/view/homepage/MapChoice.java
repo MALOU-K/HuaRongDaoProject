@@ -1,6 +1,7 @@
 package view.homepage;
 
 import model.MapModel;
+import view.FrameUtil;
 import view.game.GameFrame;
 
 import javax.swing.*;
@@ -59,6 +60,7 @@ public class MapChoice extends JFrame {
 
         level2.addActionListener(e -> {
             this.setVisible(false);
+
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
                     {4, 3, 3, 7},
@@ -80,6 +82,7 @@ public class MapChoice extends JFrame {
 
         level3.addActionListener(e -> {
             this.setVisible(false);
+
             MapModel mapModel = new MapModel(new int[][]{
                     {1, 3, 3, 1},
                     {4, 3, 3, 7},
@@ -101,6 +104,7 @@ public class MapChoice extends JFrame {
 
         level4.addActionListener(e -> {
             this.setVisible(false);
+
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
                     {4, 3, 3, 7},

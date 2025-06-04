@@ -1,7 +1,9 @@
 package view.game;
 
 import controller.GameController;
+import view.FrameUtil;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ public class VictoryWindow extends JWindow {
     private int step;
     private JLabel stepLabel;
     private JButton restartBtn,returnHomeBtn;
+    private Clip clip;
 
     public VictoryWindow( GameFrame gameFrame, int step, GameController controller) {
         super(gameFrame);
@@ -50,16 +53,20 @@ public class VictoryWindow extends JWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 VictoryWindow.this.setVisible(false);
+                gameFrame.playSound(0,"Music/按钮.wav","按钮");
                 controller.restartGame();
+                gameFrame.stopBGM("凌驾");
             }
         });
         returnHomeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 VictoryWindow.this.setVisible(false);
+                gameFrame.playSound(0,"Music/按钮.wav","按钮");
                 controller.restartGame();
                 gameFrame.setVisible(false);
                 gameFrame.getUpper().setVisible(true);
+                gameFrame.stopBGM("凌驾");
             }
         });
 

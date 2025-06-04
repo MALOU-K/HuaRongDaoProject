@@ -1,9 +1,13 @@
 package view;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -11,6 +15,8 @@ import java.io.IOException;
  * This class is to create basic JComponent.
  */
 public class FrameUtil {
+    private static Sound sound;
+
     public static JLabel createJLabel(JFrame frame, Point location, int width, int height, String text) {
         JLabel jLabel = new JLabel(text);
         jLabel.setSize(width, height);
@@ -41,6 +47,9 @@ public class FrameUtil {
         JButton button = new JButton(name);
         button.setLocation(location);
         button.setSize(width, height);
+
+
+
         frame.add(button);
         return button;
     }
@@ -73,6 +82,8 @@ public class FrameUtil {
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
+
+
         frame.add(button);
         return button;
 
@@ -97,5 +108,9 @@ public class FrameUtil {
 
         return resized;
     }
+
+
+
+
 
 }
