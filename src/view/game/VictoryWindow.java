@@ -35,15 +35,15 @@ public class VictoryWindow extends JWindow {
         stepLabel = new JLabel(Step);
         stepLabel.setFont(new Font("宋体",Font.PLAIN,50));
         stepLabel.setForeground(Color.cyan);
-        stepLabel.setBounds(getWidth() - 200,200,180,100);
+        stepLabel.setBounds(getWidth() - 250,200,250,100);
         panel1.add(stepLabel);
 
         restartBtn = new JButton("再来一次");
-        restartBtn.setBounds(getWidth() - 120,300,100,60);
+        restartBtn.setBounds(getWidth() - 200,300,100,60);
         panel1.add(restartBtn);
 
         returnHomeBtn = new JButton("返回主页");
-        returnHomeBtn.setBounds(getWidth() - 120,380,100,60);
+        returnHomeBtn.setBounds(getWidth() - 200,380,100,60);
         panel1.add(returnHomeBtn);
 
         restartBtn.addActionListener(new ActionListener() {
