@@ -20,7 +20,7 @@ public class Mainn {
             gameFrame.setVisible(false);
             home.setGameFrame(gameFrame);
 
-
+//靓仔
         });
 
     }
