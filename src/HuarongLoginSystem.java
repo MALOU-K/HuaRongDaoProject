@@ -10,6 +10,8 @@ import java.util.Base64;
 import java.io.*;
 import model.MapModel;
 import view.game.GameFrame;
+import view.homepage.MapChoice;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
@@ -511,20 +513,8 @@ public class HuarongLoginSystem extends JFrame {
             // 添加开始游戏按钮事件
             startBtn.addActionListener(e -> {
                 // 创建游戏地图模型
-                MapModel mapModel = new MapModel(new int[][]{
-                        {4, 3, 3, 7},
-                        {4, 3, 3, 7},
-                        {5, 0, 0, 6},
-                        {5, 0, 0, 6},
-                        {1, 0, 0, 1}   // 第五行
-                });
-
-                // 创建并显示游戏主窗口
-                GameFrame gameFrame = new GameFrame(600, 500, mapModel,null);
-                gameFrame.setTitle("三国华容道 - 游戏进行中");
-                gameFrame.setLocationRelativeTo(null);
-                gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                gameFrame.setVisible(true);
+                MapChoice mapChoice = new MapChoice(600,500);
+                mapChoice.setVisible(true);
 
                 // 关闭当前窗口
                 dispose();
