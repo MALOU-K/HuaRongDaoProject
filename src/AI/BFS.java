@@ -7,8 +7,9 @@ import java.util.*;
 
 
 public class BFS {
-    private Queue<Node> queue = new LinkedList<>();
+    private Queue<Node> queue = new ArrayDeque<>();
     private Set<Long> inq = new HashSet<>();
+
 
     /* initialModel: {4, 3, 3, 7},
                      {4, 3, 3, 7},
@@ -26,38 +27,45 @@ public class BFS {
         int step1 = 0;
 
         while (!queue.isEmpty()) {
-            Node top = queue.poll();
-            if (top.getModel().getMatrix()[3][1] == 3 && top.getModel().getMatrix()[3][2] == 3 && top.getModel().getMatrix()[4][1] == 3 && top.getModel().getMatrix()[4][2] == 3) {
-                return top;
-            }
-            if (top.getStep() >= 150) {
-                return top;
-            }
+            int count = queue.size();
+            for (int i = 0; i < count; i++) {
+                Node top = queue.poll();
+                if (top.getModel().getMatrix()[3][1] == 3 && top.getModel().getMatrix()[3][2] == 3 && top.getModel().getMatrix()[4][1] == 3 && top.getModel().getMatrix()[4][2] == 3) {
+                    return top;
+                }
+                if (top.getStep() >= 150) {
+                    return top;
+                }
+
+                List<int[]> zero = getZero(top.getModel());
+                for (int[] ints : zero) {
+                    for (int j = 0; j < 4; j++) {
+
+                        step1 += 1;
+                        System.out.println(step1);
+                        if (step1 > 20800000) {
+                            return top;
+                        }
 
 
-            List<int[]> zero = getZero(top.getModel());
-            for (int[] ints : zero) {
-                for (int j = 0; j < 4; j++) {
-                    int[][] copy = new int[top.getModel().getMatrix().length][];
-
-                    for (int k = 0; k < top.getModel().getMatrix().length; k++) {
-                        copy[k] = Arrays.copyOf(top.getModel().getMatrix()[k], top.getModel().getMatrix()[k].length);
-                    }
-                    step1 += 1;
-                    System.out.println(step1);
-                    if (step1 > 20800000) {
-                        return top;
-                    }
-                    MapModel copyModel = new MapModel(copy);
-
-                    if (isMove(copyModel, Direction.getDirection(-row[j], -col[j]), ints[0] + row[j], ints[1] + col[j]) && inq.add(modelToHash(copyModel))) {
-                        List<Long> newPath = new ArrayList<>(top.path);
-                        newPath.add(modelToHash(copyModel));
-                        Node node1 = new Node(copyModel, newPath);
-                        node1.setStep(top.getStep() + 1);
-                        queue.add(node1);
+                        if (isMove(top.getModel(), Direction.getDirection(-row[j], -col[j]), ints[0] + row[j], ints[1] + col[j])) {
+                            int[][] copy = new int[top.getModel().getMatrix().length][];
+                            //复制矩阵
+                            for (int k = 0; k < top.getModel().getMatrix().length; k++) {
+                                copy[k] = Arrays.copyOf(top.getModel().getMatrix()[k], top.getModel().getMatrix()[k].length);
+                            }
+                            MapModel copyModel = new MapModel(copy);
+                            Move(copyModel, Direction.getDirection(-row[j], -col[j]), ints[0] + row[j], ints[1] + col[j]);
+                            if (inq.add(modelToHash(copyModel))){
+                                List<Long> newPath = new ArrayList<>(top.path);
+                                newPath.add(modelToHash(copyModel));
+                                Node node1 = new Node(copyModel, newPath);
+                                node1.setStep(top.getStep() + 1);
+                                queue.add(node1);
+                            }
 
 
+                        }
                     }
                 }
             }
@@ -130,16 +138,32 @@ public class BFS {
                     }
                 }
             }
-            for (int i = 0; i < width; i++) {
+            /*for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
                     model.getMatrix()[nextRow - j * direction.getCol() - j * direction.getRow()][nextCol - i * direction.getRow() - i * direction.getCol()] = type;
                     model.getMatrix()[row - j * direction.getCol() - j * direction.getRow()][col - i * direction.getRow() - i * direction.getCol()] = 0;
                 }
-            }
+            }*/
             return true;
         }
 
         return false;
+    }
+
+    public void Move(MapModel model, Direction direction, int Row, int Col){
+        int col = getBlockCol(model, Row, Col, direction);
+        int row = getBlockRow(model, Row, Col, direction);
+        int nextRow = row + direction.getRow();
+        int nextCol = col + direction.getCol();
+        int type = model.getId(row, col);
+        int height = getHeight(type);
+        int width = getWidth(type);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                model.getMatrix()[nextRow - j * direction.getCol() - j * direction.getRow()][nextCol - i * direction.getRow() - i * direction.getCol()] = type;
+                model.getMatrix()[row - j * direction.getCol() - j * direction.getRow()][col - i * direction.getRow() - i * direction.getCol()] = 0;
+            }
+        }
     }
 
     public int getWidth(int type) {
