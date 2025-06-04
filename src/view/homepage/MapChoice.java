@@ -18,6 +18,7 @@ public class MapChoice extends JFrame {
         this.setLocationRelativeTo(null);
         GridLayout gridLayout = new GridLayout(2,2);
         this.setLayout(gridLayout);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.level1 = new JButton("Level 1");
         this.level1.setSize(180,100);
