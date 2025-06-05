@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +27,7 @@ import java.io.*;
 import java.util.zip.CRC32;
 
 import model.MapModel;
+import view.homepage.settingDialog;
 
 
 public class GameFrame extends JFrame {
@@ -42,6 +45,7 @@ public class GameFrame extends JFrame {
     private AIFrame aiFrame;
 
     private JButton setting;
+    private settingDialog set;
     private boolean isBGM;
     private boolean isSoundEffect;
     private JPanel contentPanel;
@@ -132,7 +136,8 @@ public class GameFrame extends JFrame {
         });
 
         this.setting = FrameUtil.createImageButton(contentPanel, "Image/设置.png", new Point(this.getWidth() - 90, 5), 50, 50);
-
+        set = new settingDialog(this);
+        setting.addActionListener(e -> set.setVisible(true));
 
         this.AIBtn = FrameUtil.createButton(contentPanel, "AI提示", new Point(this.getWidth() - 120, 60), 80, 30);
         AIBtn.addActionListener(e -> {
@@ -153,6 +158,7 @@ public class GameFrame extends JFrame {
             controller.restartGame();
             gamePanel.requestFocusInWindow();
         });
+
 
 
 

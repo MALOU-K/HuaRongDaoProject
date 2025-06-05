@@ -45,7 +45,7 @@ public class VictoryWindow extends JWindow {
         restartBtn.setBounds(getWidth() - 200, 300, 100, 60);
         panel1.add(restartBtn);
 
-        returnHomeBtn = new JButton("返回主页");
+        returnHomeBtn = new JButton("返回菜单");
         returnHomeBtn.setBounds(getWidth() - 200, 380, 100, 60);
         panel1.add(returnHomeBtn);
 

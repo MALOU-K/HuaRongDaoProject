@@ -25,6 +25,7 @@ public class MapChoice extends JFrame {
     private JButton setting;
     private Sound sound = new Sound();
     private JPanel contentPanel;
+    private settingDialog set;
 
     private boolean isSoundEffect = true;
     private boolean isBGM = true;
@@ -183,7 +184,13 @@ public class MapChoice extends JFrame {
         });
 
         this.setting = FrameUtil.createImageButton(contentPanel, "Image/设置.png", new Point(this.getWidth() - 90, 5), 50, 50);
-
+        this.set = new settingDialog(this);
+        setting.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                set.setVisible(true);
+            }
+        });
 
         this.setVisible(false);
     }
