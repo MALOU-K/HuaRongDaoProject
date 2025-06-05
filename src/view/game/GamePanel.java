@@ -4,6 +4,7 @@ import controller.GameController;
 import model.Direction;
 import model.MapModel;
 import view.AIFrame.AIFrame;
+import view.FrameUtil;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -142,6 +143,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMouseClick(Point point) {
+        gameFrame.getUpper().playSound(0,"Music/棋子.wav","棋子");
         Component component = this.getComponentAt(point);
         if (component instanceof BoxComponent clickedComponent) {
             if (selectedBox == null) {
@@ -160,6 +162,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMoveRight() {
+        gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
         System.out.println("Click VK_RIGHT");
 
         if (selectedBox != null) {
@@ -171,6 +174,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMoveLeft() {
+        gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
         System.out.println("Click VK_LEFT");
         if (selectedBox != null) {
             if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.LEFT)) {
@@ -181,6 +185,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMoveUp() {
+        gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
         System.out.println("Click VK_Up");
         if (selectedBox != null) {
             if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.UP)) {
@@ -191,6 +196,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMoveDown() {
+        gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
         System.out.println("Click VK_DOWN");
         if (selectedBox != null) {
             if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.DOWN)) {
@@ -204,8 +210,12 @@ public class GamePanel extends ListenerPanel {
         this.stepLabel.setText(String.format("Step: %d", this.steps));
         if (isWin()){
             System.out.println("win");
+
             window = new VictoryWindow(gameFrame,this.getSteps(),gameFrame.getController());
+            gameFrame.getUpper().playSound(1,"Music/起航.wav","启航");
             window.setVisible(true);
+            gameFrame.getUpper().playBGM("Music/凌驾.wav","凌驾");
+
             gameFrame.addComponentListener(new ComponentAdapter() {
                 @Override
                 public void componentMoved(ComponentEvent e) {
