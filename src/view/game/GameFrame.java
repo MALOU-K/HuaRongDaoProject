@@ -62,9 +62,6 @@ public class GameFrame extends JFrame {
 
         this.controller = new GameController(gamePanel, mapModel);
         this.upper = upper;
-      //  this.initialMapModel = new MapModel(mapModel.getInitialMatrix());
-
-
 
         this.sound = upper.getSound();
         this.isBGM = upper.isBGM();
@@ -106,12 +103,9 @@ public class GameFrame extends JFrame {
         this.restartBtn = FrameUtil.createButton(contentPanel, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
         this.loadBtn = FrameUtil.createButton(contentPanel, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
         this.stepLabel = FrameUtil.createJLabel(contentPanel, "Start", new Font("serif", Font.ITALIC, 22), new Point(30 + gamePanel.getWidth() / 2 - 30, 30), 180, 50);
-        this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
-        this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
         this.loadBtn.addActionListener(e -> loadGame());
-        this.saveBtn = FrameUtil.createButton(this, "Save", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
+        this.saveBtn = FrameUtil.createButton(contentPanel, "Save", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
         this.saveBtn.addActionListener(e -> saveGame());
-        this.stepLabel = FrameUtil.createJLabel(this, "Start", new Font("serif", Font.ITALIC, 22), new Point(30 + gamePanel.getWidth()/2 - 30, 30), 180, 50);
         gamePanel.setStepLabel(stepLabel);
 
         this.UPBtn = FrameUtil.createImageButton(contentPanel, "Image/箭头UP.png", new Point(gamePanel.getWidth() + 200, 250), 75, 45);
@@ -155,7 +149,6 @@ public class GameFrame extends JFrame {
 
         this.restartBtn.addActionListener(e -> {
             upper.playSound(0, "Music/按钮.wav", "按钮");
-
             controller.restartGame();
             gamePanel.requestFocusInWindow();
         });
@@ -165,8 +158,6 @@ public class GameFrame extends JFrame {
             System.out.println(string);
             gamePanel.requestFocusInWindow();//enable key listener
         });
-
-
 
 
 

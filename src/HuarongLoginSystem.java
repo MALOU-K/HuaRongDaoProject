@@ -544,11 +544,11 @@ public class HuarongLoginSystem extends JFrame {
                         {6, 1, 1, 7},
                         {1, 0, 0, 1}
                 });
+                MapChoice mapChoice = new MapChoice(600, 500, username);
+                GameFrame gameFrame = new GameFrame(600, 500, defaultMap, mapChoice, username);
 
-                GameFrame gameFrame = new GameFrame(800, 600, defaultMap, null, username);
-                gameFrame.setVisible(true);
                 gameFrame.loadGame(); // 加载保存的游戏
-
+                gameFrame.setVisible(true);
                 dispose(); // 关闭欢迎界面
             });
 

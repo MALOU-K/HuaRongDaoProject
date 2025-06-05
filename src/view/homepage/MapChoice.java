@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 
 
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -86,26 +85,10 @@ public class MapChoice extends JFrame {
         this.level4.setLocation(320,230);
         contentPanel.add(level4);
 
+
         level1.addActionListener(e -> {
             playSound(0, "Music/按钮.wav", "按钮");
             playSound(1,"Music/宝藏.wav","宝藏");
-            this.setVisible(false);
-            MapModel mapModel = new MapModel(new int[][]{
-                    {4, 3, 3, 7},
-                    {4, 3, 3, 7},
-                    {5, 0, 0, 6},
-                    {5, 0, 0, 6},
-                    {1, 0, 0, 1}
-            });
-
-            // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this);
-        this.level4.setSize(180,100);
-        this.add(level4);
-
-
-
-        level1.addActionListener(e -> {
             this.setVisible(false);
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
