@@ -136,8 +136,61 @@ public class GameFrame extends JFrame {
         });
 
         this.setting = FrameUtil.createImageButton(contentPanel, "Image/设置.png", new Point(this.getWidth() - 90, 5), 50, 50);
-        set = new settingDialog(this);
-        setting.addActionListener(e -> set.setVisible(true));
+        this.setting.addActionListener(e -> {
+            upper.playSound(0, "Music/按钮.wav", "按钮");
+
+            // 创建弹出菜单
+            JPopupMenu popupMenu = new JPopupMenu();
+
+            // 添加"返回菜单"选项
+            JMenuItem returnItem = new JMenuItem("返回菜单");
+            returnItem.addActionListener(evt -> {
+                // 询问是否保存
+                int choice = JOptionPane.showConfirmDialog(
+                        GameFrame.this,
+                        "是否保存当前游戏进度？",
+                        "保存确认",
+                        JOptionPane.YES_NO_CANCEL_OPTION
+                );
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    saveGame(); // 保存游戏
+                    this.dispose(); // 关闭当前窗口
+                    upper.setVisible(true); // 显示地图选择界面
+                } else if (choice == JOptionPane.NO_OPTION) {
+                    this.dispose(); // 关闭当前窗口
+                    upper.setVisible(true); // 显示地图选择界面
+                }
+                // 取消则不做任何操作
+            });
+
+            // 添加"退出游戏"选项
+            JMenuItem exitItem = new JMenuItem("退出游戏");
+            exitItem.addActionListener(evt -> {
+                // 询问是否保存
+                int choice = JOptionPane.showConfirmDialog(
+                        GameFrame.this,
+                        "是否保存当前游戏进度？",
+                        "保存确认",
+                        JOptionPane.YES_NO_CANCEL_OPTION
+                );
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    saveGame(); // 保存游戏
+                    System.exit(0); // 退出程序
+                } else if (choice == JOptionPane.NO_OPTION) {
+                    System.exit(0); // 直接退出程序
+                }
+                // 取消则不做任何操作
+            });
+
+            popupMenu.add(returnItem);
+            popupMenu.add(exitItem);
+
+            // 在设置按钮下方显示菜单
+            popupMenu.show(setting, 0, setting.getHeight());
+        });
+
 
         this.AIBtn = FrameUtil.createButton(contentPanel, "AI提示", new Point(this.getWidth() - 120, 60), 80, 30);
         AIBtn.addActionListener(e -> {
