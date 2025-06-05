@@ -101,11 +101,12 @@ public class GameFrame extends JFrame {
 
 
         this.restartBtn = FrameUtil.createButton(contentPanel, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
-        this.loadBtn = FrameUtil.createButton(contentPanel, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
         this.stepLabel = FrameUtil.createJLabel(contentPanel, "Start", new Font("serif", Font.ITALIC, 22), new Point(30 + gamePanel.getWidth() / 2 - 30, 30), 180, 50);
-        this.loadBtn.addActionListener(e -> loadGame());
-        this.saveBtn = FrameUtil.createButton(contentPanel, "Save", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
-        this.saveBtn.addActionListener(e -> saveGame());
+        this.saveBtn = FrameUtil.createButton(contentPanel, "Save", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
+        this.saveBtn.addActionListener(e -> {
+            upper.playSound(0,"Music/按钮.wav","按钮");
+            saveGame();
+        });
         gamePanel.setStepLabel(stepLabel);
 
         this.UPBtn = FrameUtil.createImageButton(contentPanel, "Image/箭头UP.png", new Point(gamePanel.getWidth() + 200, 250), 75, 45);
@@ -152,12 +153,7 @@ public class GameFrame extends JFrame {
             controller.restartGame();
             gamePanel.requestFocusInWindow();
         });
-        this.loadBtn.addActionListener(e -> {
-            upper.playSound(0, "Music/按钮.wav", "按钮");
-            String string = JOptionPane.showInputDialog(this, "Input path:");
-            System.out.println(string);
-            gamePanel.requestFocusInWindow();//enable key listener
-        });
+
 
 
         this.setLocationRelativeTo(null);

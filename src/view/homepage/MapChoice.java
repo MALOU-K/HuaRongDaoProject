@@ -89,6 +89,7 @@ public class MapChoice extends JFrame {
         level1.addActionListener(e -> {
             playSound(0, "Music/按钮.wav", "按钮");
             playSound(1, "Music/宝藏.wav", "宝藏");
+            playBGM("Music/BGM.wav","BGM");
             this.setVisible(false);
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
@@ -112,6 +113,7 @@ public class MapChoice extends JFrame {
         level2.addActionListener(e -> {
             playSound(0, "Music/按钮.wav", "按钮");
             playSound(1, "Music/宝藏.wav", "宝藏");
+            playBGM("Music/BGM.wav","BGM");
             this.setVisible(false);
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
@@ -135,6 +137,7 @@ public class MapChoice extends JFrame {
         level3.addActionListener(e -> {
             playSound(0, "Music/按钮.wav", "按钮");
             playSound(1, "Music/宝藏.wav", "宝藏");
+            playBGM("Music/BGM.wav","BGM");
             this.setVisible(false);
             MapModel mapModel = new MapModel(new int[][]{
                     {1, 3, 3, 1},
@@ -158,6 +161,7 @@ public class MapChoice extends JFrame {
         level4.addActionListener(e -> {
             playSound(0, "Music/按钮.wav", "按钮");
             playSound(1, "Music/宝藏.wav", "宝藏");
+            playBGM("Music/BGM.wav","BGM");
             this.setVisible(false);
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
@@ -177,6 +181,9 @@ public class MapChoice extends JFrame {
             // 关闭当前窗口
             dispose();
         });
+
+        this.setting = FrameUtil.createImageButton(contentPanel, "Image/设置.png", new Point(this.getWidth() - 90, 5), 50, 50);
+
 
         this.setVisible(false);
     }

@@ -548,7 +548,9 @@ public class HuarongLoginSystem extends JFrame {
                 MapChoice mapChoice = new MapChoice(600, 500, username);
                 GameFrame gameFrame = new GameFrame(600, 500, defaultMap, mapChoice, username);
 
-                gameFrame.loadGame(); // 加载保存的游戏
+                gameFrame.loadGame();
+                mapChoice.playSound(1,"Music/宝藏.wav","宝藏");
+                mapChoice.playBGM("Music/BGM.wav","BGM");// 加载保存的游戏
                 gameFrame.setVisible(true);
                 dispose(); // 关闭欢迎界面
             });
@@ -559,6 +561,7 @@ public class HuarongLoginSystem extends JFrame {
             startBtn.addActionListener(e -> {
                 // 创建游戏地图模型
                 MapChoice mapChoice = new MapChoice(600, 500, username);
+                mapChoice.playBGM("Music/BGM.wav","BGM");
                 mapChoice.setVisible(true);
                 dispose(); // 关闭当前窗口
             });

@@ -6,11 +6,15 @@ import model.MapModel;
 import view.AIFrame.AIFrame;
 import view.FrameUtil;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +45,7 @@ public class GamePanel extends ListenerPanel {
         this.setSize(model.getWidth() * GRID_SIZE + 4, model.getHeight() * GRID_SIZE + 4);
         this.model = model;
         this.selectedBox = null;
+
         initialGame();
     }
 
@@ -111,6 +116,7 @@ public class GamePanel extends ListenerPanel {
                 if (box != null) {
                     box.setLocation(j * GRID_SIZE + 2, i * GRID_SIZE + 2);
                     boxes.add(box);
+                    box.setVisible(true);
                     this.add(box);
                 }
             }
@@ -135,9 +141,17 @@ public class GamePanel extends ListenerPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
-        Border border = BorderFactory.createLineBorder(Color.DARK_GRAY, 2);
+        try {
+            // 加载背景图片
+            BufferedImage backgroundImage = ImageIO.read(new File("Image/棋盘.jpg"));
+
+            g.drawImage(backgroundImage,0,0,this.getWidth(),this.getHeight(),null);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Border border = BorderFactory.createLineBorder(Color.DARK_GRAY, 4);
         this.setBorder(border);
     }
 
