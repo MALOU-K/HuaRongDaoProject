@@ -30,7 +30,7 @@ public class GameController {
         view.clearAllBox();
         view.setSteps(0);
         view.getStepLabel().setText(String.format("Step: %d", view.getSteps()));
-        if (aiFrame != null){
+        if (aiFrame != null) {
             aiFrame.dispose();
             aiFrame = null;
         }
@@ -46,7 +46,7 @@ public class GameController {
                     model.getMatrix()[row][col] = 0;
                     model.getMatrix()[nextRow][nextCol] = 1;
                     BoxComponent box = view.getSelectedBox();
-                    Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                    Move.pieceMove(box, view.getGRID_SIZE(), direction);
                     box.setRow(nextRow);
                     box.setCol(nextCol);
 
@@ -63,7 +63,7 @@ public class GameController {
                             model.getMatrix()[row][col + 1] = 0;
                             model.getMatrix()[nextRow][nextCol] = 2;
                             BoxComponent box = view.getSelectedBox();
-                            Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                            Move.pieceMove(box, view.getGRID_SIZE(), direction);
                             box.setRow(nextRow);
                             box.setCol(nextCol);
                             return true;
@@ -76,7 +76,7 @@ public class GameController {
                             model.getMatrix()[row][col] = 0;
                             model.getMatrix()[nextRow][nextCol + 1] = 2;
                             BoxComponent box = view.getSelectedBox();
-                            Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                            Move.pieceMove(box, view.getGRID_SIZE(), direction);
                             box.setRow(nextRow);
                             box.setCol(nextCol);
                             return true;
@@ -91,7 +91,7 @@ public class GameController {
                             model.getMatrix()[nextRow][nextCol] = 2;
                             model.getMatrix()[nextRow][nextCol + 1] = 2;
                             BoxComponent box = view.getSelectedBox();
-                            Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                            Move.pieceMove(box, view.getGRID_SIZE(), direction);
                             box.setRow(nextRow);
                             box.setCol(nextCol);
                             return true;
@@ -114,7 +114,7 @@ public class GameController {
                         model.getMatrix()[nextRow][nextCol] = type;
                         model.getMatrix()[nextRow + 1][nextCol] = type;
                         BoxComponent box = view.getSelectedBox();
-                        Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                        Move.pieceMove(box, view.getGRID_SIZE(), direction);
                         box.setRow(nextRow);
                         box.setCol(nextCol);
                         return true;
@@ -126,7 +126,7 @@ public class GameController {
                         model.getMatrix()[nextRow][nextCol] = type;
                         model.getMatrix()[nextRow + 1][nextCol] = type;
                         BoxComponent box = view.getSelectedBox();
-                        Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                        Move.pieceMove(box, view.getGRID_SIZE(), direction);
                         box.setRow(nextRow);
                         box.setCol(nextCol);
                         return true;
@@ -147,7 +147,7 @@ public class GameController {
                             model.getMatrix()[nextRow][nextCol] = 3;
                             model.getMatrix()[nextRow][nextCol + 1] = 3;
                             BoxComponent box = view.getSelectedBox();
-                            Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                            Move.pieceMove(box, view.getGRID_SIZE(), direction);
                             box.setRow(nextRow);
                             box.setCol(nextCol);
                             return true;
@@ -163,7 +163,7 @@ public class GameController {
                             model.getMatrix()[nextRow + 1][nextCol] = 3;
                             model.getMatrix()[nextRow + 1][nextCol + 1] = 3;
                             BoxComponent box = view.getSelectedBox();
-                            Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                            Move.pieceMove(box, view.getGRID_SIZE(), direction);
                             box.setRow(nextRow);
                             box.setCol(nextCol);
                             return true;
@@ -176,9 +176,9 @@ public class GameController {
                             model.getMatrix()[row][col + 1] = 0;
                             model.getMatrix()[row + 1][col + 1] = 0;
                             model.getMatrix()[nextRow][nextCol] = 3;
-                            model.getMatrix()[nextRow+1][nextCol] = 3;
+                            model.getMatrix()[nextRow + 1][nextCol] = 3;
                             BoxComponent box = view.getSelectedBox();
-                            Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                            Move.pieceMove(box, view.getGRID_SIZE(), direction);
                             box.setRow(nextRow);
                             box.setCol(nextCol);
                             return true;
@@ -189,11 +189,11 @@ public class GameController {
                     if (model.checkInWidthSize(nextCol + 1)) {
                         if (model.getId(nextRow, nextCol + 1) == 0 && model.getId(nextRow + 1, nextCol + 1) == 0) {
                             model.getMatrix()[row][col] = 0;
-                            model.getMatrix()[row+1][col] = 0;
-                            model.getMatrix()[nextRow][nextCol+1] = 3;
+                            model.getMatrix()[row + 1][col] = 0;
+                            model.getMatrix()[nextRow][nextCol + 1] = 3;
                             model.getMatrix()[nextRow + 1][nextCol + 1] = 3;
                             BoxComponent box = view.getSelectedBox();
-                            Move.pieceMove(box,view.getGRID_SIZE(),direction);
+                            Move.pieceMove(box, view.getGRID_SIZE(), direction);
                             box.setRow(nextRow);
                             box.setCol(nextCol);
                             return true;
@@ -204,16 +204,16 @@ public class GameController {
         }
 
 
-
         return false;
     }
 
     public void setAiFrame(AIFrame aiFrame) {
         this.aiFrame = aiFrame;
     }
-public MapModel getModel(){
-    return model;
-}
+
+    public MapModel getModel() {
+        return model;
+    }
 
     public MapModel setModel(MapModel model) {
         return model;

@@ -42,19 +42,19 @@ public class GameFrame extends JFrame {
     private AIFrame aiFrame;
 
     private JButton setting;
-    private boolean isBGM ;
-    private boolean isSoundEffect ;
+    private boolean isBGM;
+    private boolean isSoundEffect;
     private JPanel contentPanel;
 
     private Timer autoSaveTimer;
     private MapChoice upper;
 
-    private Sound sound ;
+    private Sound sound;
 
 
-    public GameFrame(int width, int height, MapModel mapModel, MapChoice upper,String username) {
+    public GameFrame(int width, int height, MapModel mapModel, MapChoice upper, String username) {
         this.currentUser = username;
-        this.setTitle("欢迎,"+username);
+        this.setTitle("欢迎," + username);
         this.setLayout(null);
         this.setSize(width, height);
         gamePanel = new GamePanel(mapModel, this);
@@ -83,7 +83,7 @@ public class GameFrame extends JFrame {
             backgroundPanel.setOpaque(false);
 
             // 将 JPanel 添加到 LayeredPane 的最底层
-            getLayeredPane().add(backgroundPanel,JLayeredPane.DEFAULT_LAYER);
+            getLayeredPane().add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
             backgroundPanel.setBounds(0, 0, getWidth(), getHeight());
 
             // 确保 ContentPane 是透明的
@@ -94,9 +94,9 @@ public class GameFrame extends JFrame {
         }
         this.contentPanel = new JPanel();
         this.contentPanel.setLayout(null);
-        this.contentPanel.setBounds(0,0,this.getWidth(),this.getHeight());
+        this.contentPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
         this.contentPanel.setOpaque(false);
-        getLayeredPane().add(contentPanel,JLayeredPane.MODAL_LAYER);
+        getLayeredPane().add(contentPanel, JLayeredPane.MODAL_LAYER);
         contentPanel.add(gamePanel);
 
 
@@ -158,8 +158,6 @@ public class GameFrame extends JFrame {
             System.out.println(string);
             gamePanel.requestFocusInWindow();//enable key listener
         });
-
-
 
 
         this.setLocationRelativeTo(null);
@@ -292,7 +290,7 @@ public class GameFrame extends JFrame {
                 MapModel newModel = new MapModel(mapMatrix);
                 newModel.setOriginalMatrix(state.getOriginalMatrix());
                 gamePanel.setModel(newModel);
-                controller = new GameController(gamePanel,newModel);
+                controller = new GameController(gamePanel, newModel);
 
                 // 重置游戏面板
                 gamePanel.clearAllBox();

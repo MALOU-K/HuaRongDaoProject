@@ -25,14 +25,15 @@ public class Sound {
         }
     }
 
-    public void playOneTime(String key){
+    public void playOneTime(String key) {
         Clip clip = clips.get(key);
         if (clip != null && !clip.isRunning()) {
             clip.setFramePosition(0);
             clip.loop(0);
         }
     }
-    public void playBgm(String key){
+
+    public void playBgm(String key) {
         Clip clip = clips.get(key);
         if (clip != null && !clip.isRunning()) {
             clip.setFramePosition(0);
@@ -55,8 +56,6 @@ public class Sound {
             }
         }
     }
-
-
 
 
 }

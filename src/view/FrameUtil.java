@@ -87,12 +87,12 @@ public class FrameUtil {
         }
         return null;*/
         ImageIcon originalIcon = new ImageIcon(filename);
-        Image image = originalIcon.getImage().getScaledInstance(width,height,Image.SCALE_SMOOTH);
+        Image image = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         ImageIcon image1 = new ImageIcon(image);
 
         JButton button = new JButton(image1);
         button.setLocation(location);
-        button.setSize(width,height);
+        button.setSize(width, height);
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
@@ -100,14 +100,15 @@ public class FrameUtil {
         return button;
 
     }
+
     public static JButton createImageButton(JPanel frame, String filename, Point location, int width, int height) {
         ImageIcon originalIcon = new ImageIcon(filename);
-        Image image = originalIcon.getImage().getScaledInstance(width,height,Image.SCALE_SMOOTH);
+        Image image = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         ImageIcon image1 = new ImageIcon(image);
 
         JButton button = new JButton(image1);
         button.setLocation(location);
-        button.setSize(width,height);
+        button.setSize(width, height);
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
@@ -137,9 +138,6 @@ public class FrameUtil {
 
         return resized;
     }
-
-
-
 
 
 }

@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.prefs.Preferences;
 import java.util.Base64;
 import java.io.*;
+
 import model.MapModel;
 import view.game.GameFrame;
 import view.homepage.MapChoice;
@@ -121,7 +122,7 @@ public class HuarongLoginSystem extends JFrame {
         gbc.fill = GridBagConstraints.NONE;
         showPasswordCheck = new JCheckBox("显示密码");
         showPasswordCheck.addItemListener(e -> {
-            passwordField.setEchoChar(showPasswordCheck.isSelected() ? (char)0 : '*');
+            passwordField.setEchoChar(showPasswordCheck.isSelected() ? (char) 0 : '*');
         });
         add(showPasswordCheck, gbc);
 
@@ -262,7 +263,7 @@ public class HuarongLoginSystem extends JFrame {
 
         JCheckBox showRegPassword = new JCheckBox("显示密码");
         showRegPassword.addItemListener(e -> {
-            char echoChar = showRegPassword.isSelected() ? (char)0 : '*';
+            char echoChar = showRegPassword.isSelected() ? (char) 0 : '*';
             regPassword.setEchoChar(echoChar);
             regConfirmPassword.setEchoChar(echoChar);
         });

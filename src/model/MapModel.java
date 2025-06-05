@@ -19,6 +19,7 @@ public class MapModel {
     public int[][] getOriginalMatrix() {
         return originalMatrix;
     }
+
     public int[][] getMatrix() {
         return currentMatrix;
     }
@@ -52,7 +53,6 @@ public class MapModel {
     public int getId(int row, int col) {
         return currentMatrix[row][col];
     }
-
 
 
     public void setMatrix(int[][] matrix) {

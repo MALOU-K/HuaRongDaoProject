@@ -28,9 +28,9 @@ public class AItest {
         }
     }
 
-    public static void printModel(MapModel mapModel){
+    public static void printModel(MapModel mapModel) {
         int[][] map = mapModel.getMatrix();
-        for (int i = 0; i <map.length ; i++) {
+        for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 System.out.print(map[i][j] + " ");
             }

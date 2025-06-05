@@ -19,9 +19,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MapChoice extends JFrame {
-  //hahaha我是帅哥
+    //hahaha我是帅哥
     private String currentUser;
-    private JButton level1,level2,level3,level4;
+    private JButton level1, level2, level3, level4;
     private JButton setting;
     private Sound sound = new Sound();
     private JPanel contentPanel;
@@ -29,9 +29,9 @@ public class MapChoice extends JFrame {
     private boolean isSoundEffect = true;
     private boolean isBGM = true;
 
-    public MapChoice(int width,int height,String username){
+    public MapChoice(int width, int height, String username) {
         this.currentUser = username;
-        this.setSize(width,height);
+        this.setSize(width, height);
         this.setLocationRelativeTo(null);
         this.setLayout(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -39,8 +39,8 @@ public class MapChoice extends JFrame {
         this.contentPanel = new JPanel();
         this.contentPanel.setLayout(null);
         this.contentPanel.setOpaque(false);
-        this.contentPanel.setBounds(0,0,this.getWidth(),this.getWidth());
-        getLayeredPane().add(contentPanel,JLayeredPane.MODAL_LAYER);
+        this.contentPanel.setBounds(0, 0, this.getWidth(), this.getWidth());
+        getLayeredPane().add(contentPanel, JLayeredPane.MODAL_LAYER);
 
         try {
             // 加载背景图片
@@ -58,7 +58,7 @@ public class MapChoice extends JFrame {
             backgroundPanel.setOpaque(false);
 
             // 将 JPanel 添加到 LayeredPane 的最底层
-            getLayeredPane().add(backgroundPanel,JLayeredPane.DEFAULT_LAYER);
+            getLayeredPane().add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
             backgroundPanel.setBounds(0, 0, getWidth(), getHeight());
 
             // 确保 ContentPane 是透明的
@@ -69,26 +69,26 @@ public class MapChoice extends JFrame {
         }
 
         this.level1 = new JButton("Level 1");
-        this.level1.setSize(180,80);
-        this.level1.setLocation(100,100);
+        this.level1.setSize(180, 80);
+        this.level1.setLocation(100, 100);
         contentPanel.add(level1);
         this.level2 = new JButton("Level 2");
-        this.level2.setSize(180,80);
-        this.level2.setLocation(320,100);
+        this.level2.setSize(180, 80);
+        this.level2.setLocation(320, 100);
         contentPanel.add(level2);
         this.level3 = new JButton("Level 3");
-        this.level3.setSize(180,80);
-        this.level3.setLocation(100,230);
+        this.level3.setSize(180, 80);
+        this.level3.setLocation(100, 230);
         contentPanel.add(level3);
         this.level4 = new JButton("Level 4");
-        this.level4.setSize(180,80);
-        this.level4.setLocation(320,230);
+        this.level4.setSize(180, 80);
+        this.level4.setLocation(320, 230);
         contentPanel.add(level4);
 
 
         level1.addActionListener(e -> {
             playSound(0, "Music/按钮.wav", "按钮");
-            playSound(1,"Music/宝藏.wav","宝藏");
+            playSound(1, "Music/宝藏.wav", "宝藏");
             this.setVisible(false);
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
@@ -99,7 +99,7 @@ public class MapChoice extends JFrame {
             });
 
             // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this,currentUser);
+            GameFrame gameFrame = new GameFrame(600, 500, mapModel, this, currentUser);
             gameFrame.setTitle("三国华容道 - 游戏进行中");
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -111,7 +111,7 @@ public class MapChoice extends JFrame {
 
         level2.addActionListener(e -> {
             playSound(0, "Music/按钮.wav", "按钮");
-            playSound(1,"Music/宝藏.wav","宝藏");
+            playSound(1, "Music/宝藏.wav", "宝藏");
             this.setVisible(false);
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
@@ -122,7 +122,7 @@ public class MapChoice extends JFrame {
             });
 
             // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this,currentUser);
+            GameFrame gameFrame = new GameFrame(600, 500, mapModel, this, currentUser);
             gameFrame.setTitle("三国华容道 - 游戏进行中");
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,7 +134,7 @@ public class MapChoice extends JFrame {
 
         level3.addActionListener(e -> {
             playSound(0, "Music/按钮.wav", "按钮");
-            playSound(1,"Music/宝藏.wav","宝藏");
+            playSound(1, "Music/宝藏.wav", "宝藏");
             this.setVisible(false);
             MapModel mapModel = new MapModel(new int[][]{
                     {1, 3, 3, 1},
@@ -145,7 +145,7 @@ public class MapChoice extends JFrame {
             });
 
             // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this,currentUser);
+            GameFrame gameFrame = new GameFrame(600, 500, mapModel, this, currentUser);
             gameFrame.setTitle("三国华容道 - 游戏进行中");
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -157,7 +157,7 @@ public class MapChoice extends JFrame {
 
         level4.addActionListener(e -> {
             playSound(0, "Music/按钮.wav", "按钮");
-            playSound(1,"Music/宝藏.wav","宝藏");
+            playSound(1, "Music/宝藏.wav", "宝藏");
             this.setVisible(false);
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
@@ -168,7 +168,7 @@ public class MapChoice extends JFrame {
             });
 
             // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this,currentUser);
+            GameFrame gameFrame = new GameFrame(600, 500, mapModel, this, currentUser);
             gameFrame.setTitle("三国华容道 - 游戏进行中");
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

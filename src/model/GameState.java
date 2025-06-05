@@ -10,7 +10,7 @@ public class GameState implements Serializable {
     private int steps;
     private String username;
 
-    public GameState(int[][] mapMatrix,int[][] originalMatrix, int steps, String username) {
+    public GameState(int[][] mapMatrix, int[][] originalMatrix, int steps, String username) {
         this.mapMatrix = mapMatrix;
         this.originalMatrix = originalMatrix;
         this.steps = steps;

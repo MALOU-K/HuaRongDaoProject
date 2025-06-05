@@ -32,7 +32,7 @@ public class GamePanel extends ListenerPanel {
     private AIFrame aiFrame;
 
 
-    public GamePanel(MapModel model,GameFrame gameFrame) {
+    public GamePanel(MapModel model, GameFrame gameFrame) {
         this.gameFrame = gameFrame;
         boxes = new ArrayList<>();
         this.setVisible(true);
@@ -45,7 +45,7 @@ public class GamePanel extends ListenerPanel {
     }
 
 
-    public GamePanel(MapModel model, AIFrame aiFrame){
+    public GamePanel(MapModel model, AIFrame aiFrame) {
         this.aiFrame = aiFrame;
         boxes = new ArrayList<>();
 
@@ -78,23 +78,23 @@ public class GamePanel extends ListenerPanel {
                     box.setSize(GRID_SIZE, GRID_SIZE);
                     map[i][j] = 0;
                 } else if (map[i][j] == 2) {
-                    box = new BoxComponent("关羽.jpg",i,j);
+                    box = new BoxComponent("关羽.jpg", i, j);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE);
                     map[i][j] = 0;
                     map[i][j + 1] = 0;
-                } else if (map[i][j] >  3) {
-                    switch (map[i][j]%4){
+                } else if (map[i][j] > 3) {
+                    switch (map[i][j] % 4) {
                         case 0:
-                            box = new BoxComponent("马超.jpg",i,j);
+                            box = new BoxComponent("马超.jpg", i, j);
                             break;
                         case 1:
-                            box = new BoxComponent("赵云.jpg",i,j);
+                            box = new BoxComponent("赵云.jpg", i, j);
                             break;
                         case 2:
-                            box = new BoxComponent("张飞.jpg",i,j);
+                            box = new BoxComponent("张飞.jpg", i, j);
                             break;
                         case 3:
-                            box = new BoxComponent("黄忠.jpg",i,j);
+                            box = new BoxComponent("黄忠.jpg", i, j);
                             break;
                     }
                     box.setSize(GRID_SIZE, GRID_SIZE * 2);
@@ -118,7 +118,7 @@ public class GamePanel extends ListenerPanel {
         this.repaint();
     }
 
-    public void clearAllBox(){
+    public void clearAllBox() {
         for (BoxComponent box : boxes) {
             removeBox(box);
         }
@@ -127,7 +127,7 @@ public class GamePanel extends ListenerPanel {
 
     }
 
-    public void removeBox(BoxComponent box){
+    public void removeBox(BoxComponent box) {
         this.remove(box);
         this.revalidate();
     }
@@ -143,7 +143,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMouseClick(Point point) {
-        gameFrame.getUpper().playSound(0,"Music/棋子.wav","棋子");
+        gameFrame.getUpper().playSound(0, "Music/棋子.wav", "棋子");
         Component component = this.getComponentAt(point);
         if (component instanceof BoxComponent clickedComponent) {
             if (selectedBox == null) {
@@ -162,7 +162,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMoveRight() {
-        gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
+        gameFrame.getUpper().playSound(0, "Music/按钮.wav", "按钮");
         System.out.println("Click VK_RIGHT");
 
         if (selectedBox != null) {
@@ -174,7 +174,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMoveLeft() {
-        gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
+        gameFrame.getUpper().playSound(0, "Music/按钮.wav", "按钮");
         System.out.println("Click VK_LEFT");
         if (selectedBox != null) {
             if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.LEFT)) {
@@ -185,7 +185,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMoveUp() {
-        gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
+        gameFrame.getUpper().playSound(0, "Music/按钮.wav", "按钮");
         System.out.println("Click VK_Up");
         if (selectedBox != null) {
             if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.UP)) {
@@ -196,7 +196,7 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMoveDown() {
-        gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
+        gameFrame.getUpper().playSound(0, "Music/按钮.wav", "按钮");
         System.out.println("Click VK_DOWN");
         if (selectedBox != null) {
             if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.DOWN)) {
@@ -208,13 +208,13 @@ public class GamePanel extends ListenerPanel {
     public void afterMove() {
         this.steps++;
         this.stepLabel.setText(String.format("Step: %d", this.steps));
-        if (isWin()){
+        if (isWin()) {
             System.out.println("win");
 
-            window = new VictoryWindow(gameFrame,this.getSteps(),gameFrame.getController());
-            gameFrame.getUpper().playSound(1,"Music/起航.wav","启航");
+            window = new VictoryWindow(gameFrame, this.getSteps(), gameFrame.getController());
+            gameFrame.getUpper().playSound(1, "Music/起航.wav", "启航");
             window.setVisible(true);
-            gameFrame.getUpper().playBGM("Music/凌驾.wav","凌驾");
+            gameFrame.getUpper().playBGM("Music/凌驾.wav", "凌驾");
 
             gameFrame.addComponentListener(new ComponentAdapter() {
                 @Override
@@ -227,7 +227,7 @@ public class GamePanel extends ListenerPanel {
                 @Override
                 public void componentResized(ComponentEvent e) {
                     if (window != null && window.isVisible()) {
-                        window.setSize(gameFrame.getContentPane().getWidth(),gameFrame.getContentPane().getHeight());
+                        window.setSize(gameFrame.getContentPane().getWidth(), gameFrame.getContentPane().getHeight());
 
                     }
                 }
@@ -239,7 +239,7 @@ public class GamePanel extends ListenerPanel {
         this.steps = steps;
     }
 
-    public boolean isWin(){
+    public boolean isWin() {
         return model.getId(3, 1) == 3 && model.getId(3, 2) == 3 && model.getId(4, 1) == 3 && model.getId(4, 2) == 3;
     }
 
@@ -258,6 +258,7 @@ public class GamePanel extends ListenerPanel {
     public BoxComponent getSelectedBox() {
         return selectedBox;
     }
+
     public void setSelectedBox(BoxComponent box) {
         // 如果之前有选中的box，先取消其选中状态
         if (this.selectedBox != null) {
@@ -280,17 +281,18 @@ public class GamePanel extends ListenerPanel {
         return GRID_SIZE;
     }
 
-    public int getSteps(){
+    public int getSteps() {
         return steps;
     }
 
-    public MapModel getModel(){
+    public MapModel getModel() {
         return model;
     }
 
     public void setModel(MapModel model) {
         this.model = model;
     }
+
     public void resetGameState() {
         clearAllBox();
         initialGame();
