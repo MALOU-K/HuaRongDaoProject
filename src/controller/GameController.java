@@ -12,15 +12,18 @@ import view.game.GamePanel;
  */
 public class GameController {
     private final GamePanel view;
-    private final MapModel model;
+    private MapModel model;
     private AIFrame aiFrame = null;
+    private GamePanel gamePanel;
 
     public GameController(GamePanel view, MapModel model) {
         this.view = view;
         this.model = model;
         view.setController(this);
+        this.gamePanel = view;
 
     }
+
 
     public void restartGame() {
         model.restart();

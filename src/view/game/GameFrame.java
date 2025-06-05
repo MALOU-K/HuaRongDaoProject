@@ -14,6 +14,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.util.zip.CRC32;
+
 import model.MapModel;
 
 
@@ -35,7 +36,7 @@ public class GameFrame extends JFrame {
     private JButton setting;
     private Timer autoSaveTimer;
     private MapChoice upper;
-    private final MapModel initialMapModel;
+//    private final MapModel initialMapModel;
 
 
     public GameFrame(int width, int height, MapModel mapModel, MapChoice upper,String username) {
@@ -48,7 +49,7 @@ public class GameFrame extends JFrame {
         this.add(gamePanel);
         this.controller = new GameController(gamePanel, mapModel);
         this.upper = upper;
-        this.initialMapModel = new MapModel(mapModel.getMatrix());
+      //  this.initialMapModel = new MapModel(mapModel.getInitialMatrix());
 
 
         this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
@@ -99,8 +100,9 @@ public class GameFrame extends JFrame {
 
 
         this.restartBtn.addActionListener(e -> {
+
             controller.restartGame();
-            gamePanel.requestFocusInWindow();//enable key listener
+            gamePanel.requestFocusInWindow();
         });
 
 
@@ -136,6 +138,7 @@ public class GameFrame extends JFrame {
         // 创建游戏状态对象
         GameState state = new GameState(
                 controller.getModel().getMatrix(),
+                controller.getModel().getOriginalMatrix(),
                 gamePanel.getSteps(),
                 currentUser
         );
@@ -165,6 +168,11 @@ public class GameFrame extends JFrame {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "保存失败: " + ex.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
         }
+        String fullPath = new File("saves/" + currentUser + ".sav").getAbsolutePath();
+        System.out.println("存档位置: " + fullPath);
+        JOptionPane.showMessageDialog(this, "存档位置: " + fullPath);
+
+
     }
 
     public void loadGame() {
@@ -227,8 +235,9 @@ public class GameFrame extends JFrame {
 
                 // 创建新模型
                 MapModel newModel = new MapModel(mapMatrix);
+                newModel.setOriginalMatrix(state.getOriginalMatrix());
                 gamePanel.setModel(newModel);
-                controller.setModel(newModel);
+                controller = new GameController(gamePanel,newModel);
 
                 // 重置游戏面板
                 gamePanel.clearAllBox();

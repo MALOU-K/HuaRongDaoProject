@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
  */
 public class MapModel {
     private int[][] currentMatrix;  // 当前游戏状态
-    private final int[][] originalMatrix; // 初始地图状态（永不修改）
+    private int[][] originalMatrix; // 初始地图状态（永不修改）
 
     public MapModel(int[][] matrix) {
         // 创建原始地图的深拷贝
@@ -15,10 +15,13 @@ public class MapModel {
         // 初始时当前状态与原始状态相同
         this.currentMatrix = copyMatrix(originalMatrix);
     }
-   /* public int[][] getOriginalMatrix() {
-        return copyMatrix(originalMatrix);
-    }*/
 
+    public int[][] getOriginalMatrix() {
+        return originalMatrix;
+    }
+    public int[][] getMatrix() {
+        return currentMatrix;
+    }
 
     public void restart() {
         // 重置为原始地图状态（深拷贝）
@@ -33,6 +36,11 @@ public class MapModel {
         return copy;
     }
 
+    public void setOriginalMatrix(int[][] originalMatrix) {
+        this.originalMatrix = originalMatrix;
+    }
+
+
     public int getWidth() {
         return this.currentMatrix[0].length;
     }
@@ -45,9 +53,7 @@ public class MapModel {
         return currentMatrix[row][col];
     }
 
-    public int[][] getMatrix() {
-        return currentMatrix;
-    }
+
 
     public void setMatrix(int[][] matrix) {
         this.currentMatrix = matrix;

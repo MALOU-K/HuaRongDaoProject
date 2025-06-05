@@ -6,11 +6,13 @@ import java.util.Arrays;
 public class GameState implements Serializable {
     private static final long serialVersionUID = 1L;
     private int[][] mapMatrix;
+    private int[][] originalMatrix;
     private int steps;
     private String username;
 
-    public GameState(int[][] mapMatrix, int steps, String username) {
+    public GameState(int[][] mapMatrix,int[][] originalMatrix, int steps, String username) {
         this.mapMatrix = mapMatrix;
+        this.originalMatrix = originalMatrix;
         this.steps = steps;
         this.username = username;
     }
@@ -27,12 +29,16 @@ public class GameState implements Serializable {
         return username;
     }
 
-    @Override
+    public int[][] getOriginalMatrix() {
+        return originalMatrix;
+    }
+
+    /*@Override
     public String toString() {
         return "GameState{" +
                 "mapMatrix=" + Arrays.deepToString(mapMatrix) +
                 ", steps=" + steps +
                 ", username='" + username + '\'' +
                 '}';
-    }
+    }*/
 }

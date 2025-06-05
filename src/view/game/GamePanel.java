@@ -281,6 +281,13 @@ public class GamePanel extends ListenerPanel {
     public void setModel(MapModel model) {
         this.model = model;
     }
-
+    public void resetGameState() {
+        clearAllBox();
+        initialGame();
+        setSteps(0);
+        getStepLabel().setText("Step: 0");
+        setSelectedBox(null);
+        repaint();
+    }
 
 }
