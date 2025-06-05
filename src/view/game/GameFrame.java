@@ -8,9 +8,11 @@ import view.Sound;
 import view.homepage.HomeFrame;
 import view.homepage.MapChoice;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -28,33 +30,72 @@ public class GameFrame extends JFrame {
     private AIFrame aiFrame;
 
     private JButton setting;
-    private boolean isBGM = true;
-    private boolean isSoundEffect = true;
+    private boolean isBGM ;
+    private boolean isSoundEffect ;
+    private JPanel contentPanel;
 
     private MapChoice upper;
 
-    private static Sound sound = new Sound();
+    private Sound sound ;
 
 
     public GameFrame(int width, int height, MapModel mapModel, MapChoice upper) {
         this.setTitle("2025 CS109 Project Demo");
-        this.setLayout(null);
+
         this.setSize(width, height);
         gamePanel = new GamePanel(mapModel, this);
         gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2);
-        this.add(gamePanel);
+
         this.controller = new GameController(gamePanel, mapModel);
         this.upper = upper;
 
-        this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
-        this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
-        this.stepLabel = FrameUtil.createJLabel(this, "Start", new Font("serif", Font.ITALIC, 22), new Point(30 + gamePanel.getWidth() / 2 - 30, 30), 180, 50);
+
+        this.sound = upper.getSound();
+        this.isBGM = upper.isBGM();
+        this.isSoundEffect = upper.isSoundEffect();
+
+        try {
+            // 加载背景图片
+            BufferedImage backgroundImage = ImageIO.read(new File("Image/背景.jpg"));
+
+            JPanel backgroundPanel = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+                }
+            };
+
+            // 设置 JPanel 为透明
+            backgroundPanel.setOpaque(false);
+
+            // 将 JPanel 添加到 LayeredPane 的最底层
+            getLayeredPane().add(backgroundPanel,JLayeredPane.DEFAULT_LAYER);
+            backgroundPanel.setBounds(0, 0, getWidth(), getHeight());
+
+            // 确保 ContentPane 是透明的
+            JPanel ContentPane = (JPanel) this.getContentPane();
+            ContentPane.setOpaque(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.contentPanel = new JPanel();
+        this.contentPanel.setLayout(null);
+        this.contentPanel.setBounds(0,0,this.getWidth(),this.getHeight());
+        this.contentPanel.setOpaque(false);
+        getLayeredPane().add(contentPanel,JLayeredPane.MODAL_LAYER);
+        contentPanel.add(gamePanel);
+
+
+        this.restartBtn = FrameUtil.createButton(contentPanel, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
+        this.loadBtn = FrameUtil.createButton(contentPanel, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
+        this.stepLabel = FrameUtil.createJLabel(contentPanel, "Start", new Font("serif", Font.ITALIC, 22), new Point(30 + gamePanel.getWidth() / 2 - 30, 30), 180, 50);
         gamePanel.setStepLabel(stepLabel);
 
-        this.UPBtn = FrameUtil.createImageButton(this, "Image/箭头UP.png", new Point(gamePanel.getWidth() + 200, 250), 75, 45);
-        this.DOWNBtn = FrameUtil.createImageButton(this, "Image/箭头DOWN.png", new Point(gamePanel.getWidth() + 200, 370), 75, 45);
-        this.LEFTBtn = FrameUtil.createImageButton(this, "Image/箭头LEFT.png", new Point(gamePanel.getWidth() + 155, 295), 45, 75);
-        this.RIGHTBtn = FrameUtil.createImageButton(this, "Image/箭头RIGHT.png", new Point(gamePanel.getWidth() + 275, 295), 45, 75);
+        this.UPBtn = FrameUtil.createImageButton(contentPanel, "Image/箭头UP.png", new Point(gamePanel.getWidth() + 200, 250), 75, 45);
+        this.DOWNBtn = FrameUtil.createImageButton(contentPanel, "Image/箭头DOWN.png", new Point(gamePanel.getWidth() + 200, 370), 75, 45);
+        this.LEFTBtn = FrameUtil.createImageButton(contentPanel, "Image/箭头LEFT.png", new Point(gamePanel.getWidth() + 155, 295), 45, 75);
+        this.RIGHTBtn = FrameUtil.createImageButton(contentPanel, "Image/箭头RIGHT.png", new Point(gamePanel.getWidth() + 275, 295), 45, 75);
 
         this.UPBtn.addActionListener(e -> {
             gamePanel.doMoveUp();
@@ -73,12 +114,12 @@ public class GameFrame extends JFrame {
             gamePanel.requestFocusInWindow();
         });
 
-        this.setting = FrameUtil.createImageButton(this, "Image/设置.png", new Point(this.getWidth() - 90, 5), 50, 50);
+        this.setting = FrameUtil.createImageButton(contentPanel, "Image/设置.png", new Point(this.getWidth() - 90, 5), 50, 50);
 
 
-        this.AIBtn = FrameUtil.createButton(this, "AI提示", new Point(this.getWidth() - 120, 60), 80, 30);
+        this.AIBtn = FrameUtil.createButton(contentPanel, "AI提示", new Point(this.getWidth() - 120, 60), 80, 30);
         AIBtn.addActionListener(e -> {
-            playSound(0, "Music/按钮.wav", "按钮");
+            upper.playSound(0, "Music/按钮.wav", "按钮");
             if (aiFrame != null) {
                 aiFrame.dispose();
                 aiFrame = null;
@@ -91,16 +132,20 @@ public class GameFrame extends JFrame {
 
 
         this.restartBtn.addActionListener(e -> {
-            playSound(0, "Music/按钮.wav", "按钮");
+            upper.playSound(0, "Music/按钮.wav", "按钮");
             controller.restartGame();
             gamePanel.requestFocusInWindow();//enable key listener
         });
         this.loadBtn.addActionListener(e -> {
-            playSound(0, "Music/按钮.wav", "按钮");
+            upper.playSound(0, "Music/按钮.wav", "按钮");
             String string = JOptionPane.showInputDialog(this, "Input path:");
             System.out.println(string);
             gamePanel.requestFocusInWindow();//enable key listener
         });
+
+
+
+
 
 
         this.setLocationRelativeTo(null);
@@ -117,41 +162,8 @@ public class GameFrame extends JFrame {
         return upper;
     }
 
-    public void playSound(int type, String filename, String key) {
-        if (type == 0) {
-            if (isSoundEffect) {
-                try {
-                    sound.loadSound(key, filename);
-                    sound.playOneTime(key);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        } else if (type == 1) {
-            if (isBGM) {
-                try {
-                    sound.loadSound(key, filename);
-                    sound.playOneTime(key);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-    }
 
-    public void playBGM(String filename, String key) {
-        if (isBGM) {
-            try {
-                sound.loadSound(key, filename);
-                sound.playOneTime(key);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
 
-    public void stopBGM(String key) {
-        sound.stop(key);
-    }
+
 
 }

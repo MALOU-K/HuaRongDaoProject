@@ -53,20 +53,20 @@ public class VictoryWindow extends JWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 VictoryWindow.this.setVisible(false);
-                gameFrame.playSound(0,"Music/按钮.wav","按钮");
+                gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
                 controller.restartGame();
-                gameFrame.stopBGM("凌驾");
+                gameFrame.getUpper().stopBGM("凌驾");
             }
         });
         returnHomeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 VictoryWindow.this.setVisible(false);
-                gameFrame.playSound(0,"Music/按钮.wav","按钮");
+                gameFrame.getUpper().playSound(0,"Music/按钮.wav","按钮");
                 controller.restartGame();
                 gameFrame.setVisible(false);
                 gameFrame.getUpper().setVisible(true);
-                gameFrame.stopBGM("凌驾");
+                gameFrame.getUpper().stopBGM("凌驾");
             }
         });
 
