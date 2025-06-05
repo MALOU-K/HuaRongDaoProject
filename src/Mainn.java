@@ -9,6 +9,7 @@ public class Mainn {
         SwingUtilities.invokeLater(() -> {
             HomeFrame home = new HomeFrame(600, 500);
             home.setVisible(true);
+            String currentUser = "靓仔";
             MapModel mapModel = new MapModel(new int[][]{
                     {4, 3, 3, 7},
                     {4, 3, 3, 7},
@@ -16,7 +17,7 @@ public class Mainn {
                     {5, 0, 0, 6},
                     {1, 0, 0, 1}
             });
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,null);
+            GameFrame gameFrame = new GameFrame(600, 500, mapModel,null,currentUser);
             gameFrame.setVisible(false);
             home.setGameFrame(gameFrame);
 

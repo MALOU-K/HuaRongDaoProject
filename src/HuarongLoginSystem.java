@@ -35,6 +35,17 @@ public class HuarongLoginSystem extends JFrame {
     private static final String USER_DB_FILE = "users.dat";
     private static final String SALT_DB_FILE = "salts.dat";
 
+    // 登录成功监听器
+    private LoginSuccessListener loginSuccessListener;
+
+    public interface LoginSuccessListener {
+        void onLoginSuccess(String username);
+    }
+
+    public void setLoginSuccessListener(LoginSuccessListener listener) {
+        this.loginSuccessListener = listener;
+    }
+
     public HuarongLoginSystem() {
         initializeUI();
         loadUserData();
@@ -320,7 +331,7 @@ public class HuarongLoginSystem extends JFrame {
 
     private void openGameScreen(String username) {
         // 创建欢迎界面
-        GameScreen gameScreen = new GameScreen();
+        GameScreen gameScreen = new GameScreen(username);
         gameScreen.setWelcomeMessage("欢迎, " + username + "!");
         gameScreen.setTitle("三国华容道 - " + username);
         gameScreen.setLocationRelativeTo(null);
@@ -328,6 +339,11 @@ public class HuarongLoginSystem extends JFrame {
 
         // 关闭登录窗口
         this.dispose();
+
+        // 触发登录成功事件
+        if (loginSuccessListener != null) {
+            loginSuccessListener.onLoginSuccess(username);
+        }
     }
 
     private void setupRememberMe() {
@@ -453,9 +469,11 @@ public class HuarongLoginSystem extends JFrame {
     // 游戏欢迎界面
     private class GameScreen extends JFrame {
         private JLabel welcomeLabel;
+        private String username; // 添加用户名字段
 
-        public GameScreen() {
-            setTitle("三国华容道");
+        public GameScreen(String username) {
+            this.username = username;
+            setTitle("三国华容道 - " + username);
             setSize(800, 600);
             setLocationRelativeTo(null);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -501,28 +519,50 @@ public class HuarongLoginSystem extends JFrame {
             desc.setMargin(new Insets(10, 20, 20, 20));
             mainPanel.add(desc, BorderLayout.CENTER);
 
-            // 开始游戏按钮
-            JButton startBtn = new JButton("开始游戏");
-            startBtn.setFont(new Font("微软雅黑", Font.BOLD, 24));
-            startBtn.setBackground(new Color(50, 205, 50));
-            startBtn.setForeground(Color.WHITE);
-            startBtn.setFocusPainted(false);
-            startBtn.setPreferredSize(new Dimension(200, 50));
-            startBtn.setBorder(BorderFactory.createRaisedBevelBorder());
-
-            // 添加开始游戏按钮事件
-            startBtn.addActionListener(e -> {
-                // 创建游戏地图模型
-                MapChoice mapChoice = new MapChoice(600,500);
-                mapChoice.setVisible(true);
-
-                // 关闭当前窗口
-                dispose();
-            });
-
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            // 按钮面板
+            JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 20, 20));
             buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
             buttonPanel.setBackground(Color.WHITE);
+
+            // 继续游戏按钮（新增）
+            JButton continueBtn = new JButton("继续游戏");
+            styleButton(continueBtn, new Color(30, 144, 255)); // 蓝色按钮
+            continueBtn.addActionListener(e -> {
+                // 检查保存文件是否存在
+                File saveFile = new File("saves/" + username + ".sav");
+                if (!saveFile.exists()) {
+                    JOptionPane.showMessageDialog(GameScreen.this,
+                            "没有找到保存的游戏", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+
+                // 使用默认地图创建游戏框架（加载时会覆盖）
+                MapModel defaultMap = new MapModel(new int[][]{
+                        {4, 3, 3, 5},
+                        {4, 3, 3, 5},
+                        {6, 2, 2, 7},
+                        {6, 1, 1, 7},
+                        {1, 0, 0, 1}
+                });
+
+                GameFrame gameFrame = new GameFrame(800, 600, defaultMap, null, username);
+                gameFrame.setVisible(true);
+                gameFrame.loadGame(); // 加载保存的游戏
+
+                dispose(); // 关闭欢迎界面
+            });
+
+            // 开始新游戏按钮
+            JButton startBtn = new JButton("开始新游戏");
+            styleButton(startBtn, new Color(50, 205, 50)); // 绿色按钮
+            startBtn.addActionListener(e -> {
+                // 创建游戏地图模型
+                MapChoice mapChoice = new MapChoice(600, 500, username);
+                mapChoice.setVisible(true);
+                dispose(); // 关闭当前窗口
+            });
+
+            buttonPanel.add(continueBtn);
             buttonPanel.add(startBtn);
             mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -532,6 +572,16 @@ public class HuarongLoginSystem extends JFrame {
         // 设置欢迎消息
         public void setWelcomeMessage(String message) {
             welcomeLabel.setText(message);
+        }
+
+        // 按钮样式统一方法
+        private void styleButton(JButton button, Color bgColor) {
+            button.setFont(new Font("微软雅黑", Font.BOLD, 24));
+            button.setBackground(bgColor);
+            button.setForeground(Color.WHITE);
+            button.setFocusPainted(false);
+            button.setBorder(BorderFactory.createRaisedBevelBorder());
+            button.setPreferredSize(new Dimension(200, 50));
         }
     }
 }

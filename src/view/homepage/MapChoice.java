@@ -7,18 +7,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MapChoice extends JFrame {
   //hahaha我是帅哥
+    private String currentUser;
     private JButton level1,level2,level3,level4;
     private JButton exit;
 
-    public MapChoice(int width,int height){
+    public MapChoice(int width,int height,String username){
+        this.currentUser = username;
         this.setSize(width,height);
         this.setLocationRelativeTo(null);
         GridLayout gridLayout = new GridLayout(2,2);
         this.setLayout(gridLayout);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
 
         this.level1 = new JButton("Level 1");
         this.level1.setSize(180,100);
@@ -33,26 +38,7 @@ public class MapChoice extends JFrame {
         this.level4.setSize(180,100);
         this.add(level4);
 
-        level1.addActionListener(e -> {
-            this.setVisible(false);
-            MapModel mapModel = new MapModel(new int[][]{
-                    {4, 3, 3, 7},
-                    {4, 3, 3, 7},
-                    {5, 0, 0, 6},
-                    {5, 0, 0, 6},
-                    {1, 0, 0, 1}
-            });
 
-            // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this);
-            gameFrame.setTitle("三国华容道 - 游戏进行中");
-            gameFrame.setLocationRelativeTo(null);
-            gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            gameFrame.setVisible(true);
-
-            // 关闭当前窗口
-            dispose();
-        });
 
         level1.addActionListener(e -> {
             this.setVisible(false);
@@ -65,7 +51,7 @@ public class MapChoice extends JFrame {
             });
 
             // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this);
+            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this,currentUser);
             gameFrame.setTitle("三国华容道 - 游戏进行中");
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,7 +72,7 @@ public class MapChoice extends JFrame {
             });
 
             // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this);
+            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this,currentUser);
             gameFrame.setTitle("三国华容道 - 游戏进行中");
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,7 +93,7 @@ public class MapChoice extends JFrame {
             });
 
             // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this);
+            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this,currentUser);
             gameFrame.setTitle("三国华容道 - 游戏进行中");
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -128,7 +114,7 @@ public class MapChoice extends JFrame {
             });
 
             // 创建并显示游戏主窗口
-            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this);
+            GameFrame gameFrame = new GameFrame(600, 500, mapModel,this,currentUser);
             gameFrame.setTitle("三国华容道 - 游戏进行中");
             gameFrame.setLocationRelativeTo(null);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

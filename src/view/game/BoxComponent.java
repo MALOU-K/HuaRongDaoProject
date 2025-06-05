@@ -43,12 +43,11 @@ public class BoxComponent extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (image == null) {
+        if (image != null) {
+            g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        } else if (color != null) {
             g.setColor(color);
             g.fillRect(0, 0, getWidth(), getHeight());
-        }
-        if (color == null) {
-            g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         }
         Border border;
         if (isSelected) {
@@ -57,11 +56,6 @@ public class BoxComponent extends JComponent {
             border = BorderFactory.createLineBorder(Color.DARK_GRAY, 1);
         }
         this.setBorder(border);
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-        this.repaint();
     }
 
     public int getRow() {
@@ -78,5 +72,9 @@ public class BoxComponent extends JComponent {
 
     public void setCol(int col) {
         this.col = col;
+    }
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+        this.repaint(); // 重绘组件以更新边框
     }
 }

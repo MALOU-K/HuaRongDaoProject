@@ -1,6 +1,7 @@
 package view.game;
 
 import controller.GameController;
+import model.GameState;
 import model.MapModel;
 import view.AIFrame.AIFrame;
 import view.FrameUtil;
@@ -9,13 +10,20 @@ import view.homepage.MapChoice;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
+import java.util.zip.CRC32;
+import model.MapModel;
+
 
 public class GameFrame extends JFrame {
 
     private GameController controller;
     private JButton restartBtn;
     private JButton loadBtn;
-
+    private String currentUser;
+    private JButton saveBtn;
     private JLabel stepLabel;
     private GamePanel gamePanel;
 
@@ -25,12 +33,14 @@ public class GameFrame extends JFrame {
     private AIFrame aiFrame;
 
     private JButton setting;
-
+    private Timer autoSaveTimer;
     private MapChoice upper;
+    private final MapModel initialMapModel;
 
 
-    public GameFrame(int width, int height, MapModel mapModel, MapChoice upper) {
-        this.setTitle("2025 CS109 Project Demo");
+    public GameFrame(int width, int height, MapModel mapModel, MapChoice upper,String username) {
+        this.currentUser = username;
+        this.setTitle("欢迎,"+username);
         this.setLayout(null);
         this.setSize(width, height);
         gamePanel = new GamePanel(mapModel,this);
@@ -38,9 +48,14 @@ public class GameFrame extends JFrame {
         this.add(gamePanel);
         this.controller = new GameController(gamePanel, mapModel);
         this.upper = upper;
+        this.initialMapModel = new MapModel(mapModel.getMatrix());
+
 
         this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
         this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
+        this.loadBtn.addActionListener(e -> loadGame());
+        this.saveBtn = FrameUtil.createButton(this, "Save", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
+        this.saveBtn.addActionListener(e -> saveGame());
         this.stepLabel = FrameUtil.createJLabel(this, "Start", new Font("serif", Font.ITALIC, 22), new Point(30 + gamePanel.getWidth()/2 - 30, 30), 180, 50);
         gamePanel.setStepLabel(stepLabel);
 
@@ -87,14 +102,6 @@ public class GameFrame extends JFrame {
             controller.restartGame();
             gamePanel.requestFocusInWindow();//enable key listener
         });
-        this.loadBtn.addActionListener(e -> {
-            String string = JOptionPane.showInputDialog(this, "Input path:");
-            System.out.println(string);
-            gamePanel.requestFocusInWindow();//enable key listener
-        });
-
-
-
 
 
 
@@ -102,10 +109,9 @@ public class GameFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-
-
-
+        setupAutoSave();
 
     }
 
@@ -116,4 +122,163 @@ public class GameFrame extends JFrame {
     public MapChoice getUpper() {
         return upper;
     }
+
+    private void saveGame() {
+        if ("游客".equals(currentUser)) {
+            JOptionPane.showMessageDialog(this, "游客无法保存游戏", "提示", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        File saveDir = new File("saves");
+        if (!saveDir.exists()) {
+            saveDir.mkdir();
+        }
+
+        // 创建游戏状态对象
+        GameState state = new GameState(
+                controller.getModel().getMatrix(),
+                gamePanel.getSteps(),
+                currentUser
+        );
+
+        try {
+            // 创建字节数组输出流
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            // 使用同一个 ObjectOutputStream 计算校验和和写入文件
+            try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+                oos.writeObject(state);
+
+                // 计算校验和
+                byte[] data = baos.toByteArray();
+                CRC32 crc = new CRC32();
+                crc.update(data);
+                long checksum = crc.getValue();
+
+                // 写入文件（包含校验和）
+                try (ObjectOutputStream fileOos = new ObjectOutputStream(
+                        new FileOutputStream("saves/" + currentUser + ".sav"))) {
+                    fileOos.writeLong(checksum); // 写入校验和
+                    fileOos.write(data); // 写入序列化数据
+                    JOptionPane.showMessageDialog(this, "游戏已保存", "成功", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "保存失败: " + ex.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void loadGame() {
+
+        if ("游客".equals(currentUser)) {
+            JOptionPane.showMessageDialog(this, "游客无法加载游戏", "提示", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        File saveFile = new File("saves/" + currentUser + ".sav");
+        if (!saveFile.exists()) {
+            JOptionPane.showMessageDialog(this, "没有找到保存文件", "提示", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(
+                new FileInputStream(saveFile))) {
+
+            // 读取校验和
+            long savedChecksum = ois.readLong();
+
+            // 读取序列化数据
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = ois.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytesRead);
+            }
+            byte[] data = baos.toByteArray();
+
+            // 验证校验和
+            CRC32 crc = new CRC32();
+            crc.update(data);
+            long calculatedChecksum = crc.getValue();
+
+            if (savedChecksum != calculatedChecksum) {
+                throw new IOException("文件校验失败，可能已被篡改");
+            }
+
+            // 反序列化游戏状态
+            try (ObjectInputStream dataOis = new ObjectInputStream(
+                    new ByteArrayInputStream(data))) {
+                GameState state = (GameState) dataOis.readObject();
+
+                // 验证用户匹配
+                if (!currentUser.equals(state.getUsername())) {
+                    throw new IOException("用户不匹配");
+                }
+
+                // 验证地图数据
+                int[][] mapMatrix = state.getMapMatrix();
+                if (mapMatrix == null || mapMatrix.length == 0 || mapMatrix[0].length == 0) {
+                    throw new IOException("地图数据损坏");
+                }
+
+                // 验证步数
+                if (state.getSteps() < 0) {
+                    throw new IOException("步数数据损坏");
+                }
+
+                // 创建新模型
+                MapModel newModel = new MapModel(mapMatrix);
+                gamePanel.setModel(newModel);
+                controller.setModel(newModel);
+
+                // 重置游戏面板
+                gamePanel.clearAllBox();
+                gamePanel.initialGame();
+                gamePanel.setSteps(state.getSteps());
+                gamePanel.getStepLabel().setText("Step: " + state.getSteps());
+
+                // 重置选中的棋子
+                gamePanel.setSelectedBox(null);
+
+                JOptionPane.showMessageDialog(this, "游戏已加载", "成功", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (IOException | ClassNotFoundException | ClassCastException ex) {
+            JOptionPane.showMessageDialog(this, "加载失败: 文件可能已损坏 - " + ex.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+            // 删除损坏文件
+            if (saveFile.exists()) {
+                saveFile.delete();
+            }
+        }
+    }
+
+    private void setupAutoSave() {
+        // 如果不是游客，设置自动保存
+        if (!"游客".equals(currentUser)) {
+            // 定时自动保存（每5分钟）
+            autoSaveTimer = new Timer(30000, e -> saveGame());
+            autoSaveTimer.start();
+        }
+
+        // 退出时保存处理
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int choice = JOptionPane.showConfirmDialog(
+                        GameFrame.this,
+                        "是否保存游戏进度？",
+                        "退出确认",
+                        JOptionPane.YES_NO_CANCEL_OPTION
+                );
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    saveGame();
+                    dispose(); // 关闭窗口
+                } else if (choice == JOptionPane.NO_OPTION) {
+                    dispose(); // 关闭窗口
+                }
+                // 取消则不做任何操作，窗口保持打开
+            }
+        });
+    }
+
+
 }

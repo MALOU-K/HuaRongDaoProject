@@ -4,7 +4,6 @@ import model.Direction;
 import model.MapModel;
 import view.AIFrame.AIFrame;
 import view.game.BoxComponent;
-import view.game.GameFrame;
 import view.game.GamePanel;
 
 /**
@@ -209,5 +208,14 @@ public class GameController {
     public void setAiFrame(AIFrame aiFrame) {
         this.aiFrame = aiFrame;
     }
+public MapModel getModel(){
+    return model;
+}
+
+    public MapModel setModel(MapModel model) {
+        return model;
+    }
+
+
 }
 

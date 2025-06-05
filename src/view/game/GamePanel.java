@@ -43,6 +43,7 @@ public class GamePanel extends ListenerPanel {
         initialGame();
     }
 
+
     public GamePanel(MapModel model, AIFrame aiFrame){
         this.aiFrame = aiFrame;
         boxes = new ArrayList<>();
@@ -160,6 +161,7 @@ public class GamePanel extends ListenerPanel {
     @Override
     public void doMoveRight() {
         System.out.println("Click VK_RIGHT");
+
         if (selectedBox != null) {
             if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.RIGHT)) {
                 afterMove();
@@ -246,6 +248,23 @@ public class GamePanel extends ListenerPanel {
     public BoxComponent getSelectedBox() {
         return selectedBox;
     }
+    public void setSelectedBox(BoxComponent box) {
+        // 如果之前有选中的box，先取消其选中状态
+        if (this.selectedBox != null) {
+            this.selectedBox.setSelected(false);
+        }
+
+        // 设置新的选中box
+        this.selectedBox = box;
+
+        // 如果新box不为null，设置其选中状态
+        if (this.selectedBox != null) {
+            this.selectedBox.setSelected(true);
+        }
+
+        // 重绘面板以更新显示
+        this.repaint();
+    }
 
     public int getGRID_SIZE() {
         return GRID_SIZE;
@@ -262,4 +281,6 @@ public class GamePanel extends ListenerPanel {
     public void setModel(MapModel model) {
         this.model = model;
     }
+
+
 }
